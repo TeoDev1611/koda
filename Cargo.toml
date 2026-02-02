@@ -1,0 +1,39 @@
+[package]
+name = "koda"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+
+# Database
+sqlx = { version = "0.8", features = ["runtime-tokio-rustls", "postgres", "sqlite", "mysql", "any"] }
+
+# CLI
+clap = { version = "4.5", features = ["derive"] }
+
+# Error handling
+anyhow = "1.0"
+
+# Tables/Formatting
+tabled = "0.17"
+
+# JSON
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde_yaml = "0.9"
+
+# Colors / Syntax Highlighting
+colored = "2.0"
+colored_json = "4.0"
+
+# Time
+chrono = "0.4"
+
+# Environment variables (for DB URLs)
+dotenvy = "0.15"
+
+# TUI
+ratatui = "0.29"
+crossterm = "0.28"
