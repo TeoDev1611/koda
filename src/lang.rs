@@ -10,8 +10,12 @@ impl Strings {
     pub fn get(lang: &Language, key: &str) -> String {
         match (lang, key) {
             // Errors
-            (Language::En, "error_foreign_key") => "Cannot delete: Data is referenced by another table.".to_string(),
-            (Language::Es, "error_foreign_key") => "No se puede borrar: Datos referenciados por otra tabla.".to_string(),
+            (Language::En, "error_foreign_key") => {
+                "Cannot delete: Data is referenced by another table.".to_string()
+            }
+            (Language::Es, "error_foreign_key") => {
+                "No se puede borrar: Datos referenciados por otra tabla.".to_string()
+            }
             (Language::En, "error_delete_failed") => "Delete failed".to_string(),
             (Language::Es, "error_delete_failed") => "Error al borrar".to_string(),
 
@@ -24,13 +28,13 @@ impl Strings {
             (Language::Es, "status_connected") => "Conectado".to_string(),
             (Language::En, "status_failed") => "Failed".to_string(),
             (Language::Es, "status_failed") => "Error".to_string(),
-            
+
             // Titles
             (Language::En, "title_tables") => " Tables (Tab) ".to_string(),
             (Language::Es, "title_tables") => " Tablas (Tab) ".to_string(),
             (Language::En, "title_data") => " Data: ".to_string(),
             (Language::Es, "title_data") => " Datos: ".to_string(),
-            
+
             // Hints
             (Language::En, "hint_nav") => "Tab: Switch | '?' Help | 'q' Exit".to_string(),
             (Language::Es, "hint_nav") => "Tab: Cambiar Foco | '?' Ayuda | 'q' Salir".to_string(),
@@ -38,7 +42,7 @@ impl Strings {
             (Language::Es, "hint_add") => "'a' Añadir".to_string(),
             (Language::En, "hint_select") => "Select a table and press Enter".to_string(),
             (Language::Es, "hint_select") => "Selecciona una tabla y pulsa Enter".to_string(),
-            
+
             // Actions
             (Language::En, "action_adding") => "Adding Row".to_string(),
             (Language::Es, "action_adding") => "Añadiendo Fila".to_string(),
@@ -74,8 +78,12 @@ impl Strings {
             // Delete
             (Language::En, "confirm_delete_title") => " Confirm Delete ".to_string(),
             (Language::Es, "confirm_delete_title") => " Confirmar Borrado ".to_string(),
-            (Language::En, "confirm_delete_msg") => "Are you sure you want to delete this row?".to_string(),
-            (Language::Es, "confirm_delete_msg") => "¿Seguro que deseas borrar esta fila?".to_string(),
+            (Language::En, "confirm_delete_msg") => {
+                "Are you sure you want to delete this row?".to_string()
+            }
+            (Language::Es, "confirm_delete_msg") => {
+                "¿Seguro que deseas borrar esta fila?".to_string()
+            }
             (Language::En, "confirm_yes") => "(y) Yes".to_string(),
             (Language::Es, "confirm_yes") => "(y) Sí".to_string(),
             (Language::En, "confirm_no") => "(n) No".to_string(),

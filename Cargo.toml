@@ -1,7 +1,17 @@
+[[bin]]
+name = "koda-gui"
+path = "src/gui.rs"
+
 [package]
 name = "koda"
 version = "0.1.0"
 edition = "2024"
+authors = ["Teo"]
+description = "A lightweight, universal database viewer for SQL databases (CLI, TUI, and GUI)."
+repository = "https://github.com/yourusername/koda"
+license = "MIT"
+keywords = ["database", "sql", "viewer", "egui", "ratatui"]
+categories = ["development-tools::database"]
 
 [dependencies]
 # Async runtime
@@ -37,3 +47,7 @@ dotenvy = "0.15"
 # TUI
 ratatui = "0.29"
 crossterm = "0.28"
+
+# GUI
+eframe = "0.29"
+rfd = "0.17.2"

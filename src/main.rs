@@ -129,16 +129,21 @@ async fn main() -> Result<()> {
             println!("{}", table);
         }
         Some(Commands::Export { output, format }) => {
+            use serde_json::json;
             use std::fs;
             use std::path::Path;
-            use serde_json::json;
 
-            println!("{} {} ({})", "🚀 Iniciando exportación a:".cyan().bold(), output, format);
+            println!(
+                "{} {} ({})",
+                "🚀 Iniciando exportación a:".cyan().bold(),
+                output,
+                format
+            );
             let db = KodaDb::connect(&uri).await?;
-            
+
             // Create directory
             fs::create_dir_all(output)?;
-            
+
             // List tables
             let tables = db.list_tables().await?;
             println!("{} {}", "📦 Tablas encontradas:".yellow(), tables.len());
@@ -148,11 +153,11 @@ async fn main() -> Result<()> {
                 match db.fetch_table_as_json(table).await {
                     Ok(json_data) => {
                         let file_path = if format == "yaml" {
-                             Path::new(output).join(format!("{}.yaml", table))
+                            Path::new(output).join(format!("{}.yaml", table))
                         } else {
-                             Path::new(output).join(format!("{}.json", table))
+                            Path::new(output).join(format!("{}.json", table))
                         };
-                        
+
                         let content = if format == "yaml" {
                             serde_yaml::to_string(&json_data).map_err(|e| anyhow::anyhow!(e))?
                         } else {
@@ -175,7 +180,7 @@ async fn main() -> Result<()> {
                 "tables": tables,
                 "format": format
             });
-            
+
             let meta_path = if format == "yaml" {
                 Path::new(output).join("_metadata.yaml")
             } else {
@@ -183,38 +188,44 @@ async fn main() -> Result<()> {
             };
 
             let meta_content = if format == "yaml" {
-                 serde_yaml::to_string(&metadata).map_err(|e| anyhow::anyhow!(e))?
+                serde_yaml::to_string(&metadata).map_err(|e| anyhow::anyhow!(e))?
             } else {
-                 serde_json::to_string_pretty(&metadata)?
+                serde_json::to_string_pretty(&metadata)?
             };
-            
+
             fs::write(meta_path, meta_content)?;
 
             println!("{}", "✅ ¡Exportación completada!".green().bold());
         }
         Some(Commands::Import { input }) => {
+            use serde_json::Value;
             use std::fs;
             use std::path::Path;
-            use serde_json::Value;
 
-            println!("{} {}", "📥 Iniciando importación desde:".cyan().bold(), input);
+            println!(
+                "{} {}",
+                "📥 Iniciando importación desde:".cyan().bold(),
+                input
+            );
             let db = KodaDb::connect(&uri).await?;
             let dir = Path::new(input);
-            
+
             // Look for metadata to guide us, or scan files
             // Simple scan: look for .json or .yaml files
             let entries = fs::read_dir(dir)?;
-            
+
             for entry in entries {
                 let entry = entry?;
                 let path = entry.path();
                 if path.is_file() {
                     let fname = path.file_name().unwrap().to_str().unwrap();
-                    if fname.starts_with("_metadata") { continue; }
-                    
+                    if fname.starts_with("_metadata") {
+                        continue;
+                    }
+
                     let table_name = path.file_stem().unwrap().to_str().unwrap();
                     let ext = path.extension().unwrap_or_default().to_str().unwrap_or("");
-                    
+
                     let content = fs::read_to_string(&path)?;
                     let data: Value = if ext == "yaml" || ext == "yml" {
                         serde_yaml::from_str(&content).map_err(|e| anyhow::anyhow!(e))?
@@ -224,7 +235,11 @@ async fn main() -> Result<()> {
                         continue;
                     };
 
-                    println!("   - Importando tabla: {} (desde {})...", table_name.cyan(), fname);
+                    println!(
+                        "   - Importando tabla: {} (desde {})...",
+                        table_name.cyan(),
+                        fname
+                    );
                     match db.import_table(table_name, &data).await {
                         Ok(count) => println!("     {} Insertadas {} filas.", "✅".green(), count),
                         Err(e) => println!("     {} Error: {}", "❌".red(), e),
